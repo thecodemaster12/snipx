@@ -1,4 +1,5 @@
 import HomePage from "./components/pages/HomePage"
+import { SnippetProvider } from "./context/SnippetContex"
 
 
 const App = () => {
@@ -7,7 +8,9 @@ const App = () => {
       <main>
         <div className="bg-gray-900 text-white min-h-screen">
           <div className="container mx-auto">
-            <HomePage />
+            <SnippetProvider>
+              <HomePage />
+            </SnippetProvider>
           </div>
         </div>
       </main>

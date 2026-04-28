@@ -1,7 +1,7 @@
 import Header from "../Header"
-import SnippetForm from "../snippets/components/SnippetForm"
-import SnippetList from "../snippets/components/SnippetList"
-import SnippetSearch from "../snippets/components/SnippetSearch"
+import SnippetForm from "../snippets/SnippetForm"
+import SnippetList from "../snippets/SnippetList"
+import SnippetSearch from "../snippets/SnippetSearch"
 
 const HomePage = () => {
   return (
