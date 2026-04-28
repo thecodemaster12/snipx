@@ -6,10 +6,6 @@ export const SnippetProvider = ({children}) => {
   const [snippets, setSnippets] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const addSnippet = (snippetData) => {
-    
-  }
-
   const fetchSnippets = async () => {
     try {
       const res = await fetch("http://localhost:3001/snippets");
