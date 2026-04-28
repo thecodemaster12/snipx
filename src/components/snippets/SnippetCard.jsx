@@ -1,7 +1,7 @@
 const SnippetCard = ({snippet}) => {
   return (
     <>
-      <div className="bg-gray-800 p-4 rounded shadow">
+      <div className="bg-gray-700 p-4 rounded shadow">
         <h2 className="text-lg font-semibold text-gray-100">
           {snippet.title}
         </h2>
