@@ -8,7 +8,7 @@ export const SnippetProvider = ({children}) => {
 
   const fetchSnippets = async () => {
     try {
-      const res = await fetch("http://localhost:3001/snippets");
+      const res = await fetch("http://localhost:4000/snippets");
       if (!res.ok) {
         throw new Error(`HTTP error status: ${res.status}`);
       }
@@ -20,6 +20,10 @@ export const SnippetProvider = ({children}) => {
       setLoading(false);
     }
   };
+
+  const addSnippet = (snippet) => {
+    
+  }
 
   useEffect(() => {
     fetchSnippets();

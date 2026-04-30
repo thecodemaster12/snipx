@@ -1,19 +1,35 @@
 {
-  "$schema": "./node_modules/json-server/schema.json",
   "snippets": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Console Log",
       "code": "console.log('Hello')",
       "language": "javascript",
-      "tags": ["debug", "JS", "IDK"]
+      "tags": [
+        "debug",
+        "JS",
+        "IDK"
+      ]
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "IDK lets see",
       "code": "console.log('Hello')",
       "language": "javascript",
-      "tags": ["debug"]
+      "tags": [
+        "debug"
+      ]
+    },
+    {
+      "title": "new",
+      "language": "normal",
+      "code": "console.log",
+      "tags": [
+        "js",
+        "idk"
+      ],
+      "id": "PbrgC4fQKK4"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
