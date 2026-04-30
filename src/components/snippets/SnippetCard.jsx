@@ -1,4 +1,20 @@
+import {useContext} from "react";
+import {SnippetContext} from "@/context/SnippetContex.jsx";
+
+
 const SnippetCard = ({snippet}) => {
+    const {deleteSnippet} = useContext(SnippetContext)
+
+    const handleDelete = async (id) => {
+        const confirmDelete = confirm("Are you sure?");
+        if (!confirmDelete) return;
+
+        try {
+            await deleteSnippet(id);
+        } catch (error) {
+            alert("Failed to delete:", error);
+        }
+    };
   return (
     <>
       <div className="bg-gray-700 p-4 rounded shadow">
@@ -25,6 +41,12 @@ const SnippetCard = ({snippet}) => {
           ))}
         </div>
       </div>
+        <button
+            type="button"
+            onClick={() => handleDelete(snippet.id)}
+        >
+            Delete
+        </button>
     </>
   )
 }

@@ -21,37 +21,77 @@ export const SnippetProvider = ({ children }) => {
     }
   };
 
-  const addSnippet = async (snippet) => {
-    try {
-      const res = await fetch("http://localhost:4000/snippets", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(snippet),
-      });
+    const addSnippet = async (snippet) => {
+        const tempId = Date.now();
 
-      if (!res.ok) {
-        throw new Error("Failed to add snippet");
-      }
+        const optimisticSnippet = { ...snippet, id: tempId };
 
-      const data = await res.json()
+        // 1. add instantly
+        setSnippets((prev) => [...prev, optimisticSnippet]);
 
-      setSnippets((prev) => [...prev, data])
+        try {
+            const res = await fetch("http://localhost:4000/snippets", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(snippet),
+            });
 
-      return data
-    } catch (error) {
-      console.error(`Add snippet error: `, error);
-      throw error;
-    }
-  };
+            if (!res.ok) {
+                throw new Error("Failed to add snippet");
+            }
+
+            const data = await res.json();
+
+            // 2. replace temp with real
+            setSnippets((prev) =>
+                prev.map((s) => (s.id === tempId ? data : s))
+            );
+
+        } catch (error) {
+            // 3. rollback (remove temp)
+            setSnippets((prev) => prev.filter((s) => s.id !== tempId));
+
+            alert("Add failed. Try again.");
+
+            throw error;
+        }
+    };
+
+    const deleteSnippet = async (id) => {
+        // 1. backup current state
+        const previousSnippets = snippets;
+
+        // 2. optimistic UI update
+        setSnippets((prev) => prev.filter((s) => s.id !== id));
+
+        try {
+            const res = await fetch(`http://localhost:4000/snippets/${id}`, {
+                method: "DELETE",
+            });
+
+            if (!res.ok) {
+                throw new Error("Failed to delete snippet");
+            }
+
+        } catch (error) {
+            // 3. rollback
+            setSnippets(previousSnippets);
+
+            // 4. inform user
+            alert("Delete failed. Restored item.");
+
+            throw error;
+        }
+    };
 
   useEffect(() => {
     fetchSnippets();
   }, []);
 
   return (
-    <SnippetContext.Provider value={{ snippets, loading, addSnippet }}>
+    <SnippetContext.Provider value={{ snippets, loading, addSnippet, deleteSnippet }}>
       {children}
     </SnippetContext.Provider>
   );

@@ -12,45 +12,6 @@
       ]
     },
     {
-      "id": "2",
-      "title": "IDK lets see",
-      "code": "console.log('Hello')",
-      "language": "javascript",
-      "tags": [
-        "debug"
-      ]
-    },
-    {
-      "title": "new",
-      "language": "normal",
-      "code": "console.log",
-      "tags": [
-        "js",
-        "idk"
-      ],
-      "id": "PbrgC4fQKK4"
-    },
-    {
-      "title": "new",
-      "language": "lj",
-      "code": "ljl",
-      "tags": [
-        "jds jeln",
-        "elhrljk"
-      ],
-      "id": "DQlmQiH5eqU"
-    },
-    {
-      "title": "new",
-      "language": "lj",
-      "code": "ljl",
-      "tags": [
-        "jds jeln",
-        "elhrljk"
-      ],
-      "id": "FG25k6ARaRg"
-    },
-    {
       "title": "another title",
       "language": "isk",
       "code": "lskjflej",
@@ -61,21 +22,11 @@
       "id": "sP1kuoglx_k"
     },
     {
-      "title": "main",
-      "language": "c",
-      "code": "main void {\n",
-      "tags": [
-        "c",
-        "cp"
-      ],
-      "id": "7KKNcktqVLE"
-    },
-    {
-      "title": "fsdd",
-      "language": "sdfdsfds",
-      "code": "fsdfsdfsdf",
+      "title": "Fast",
+      "language": "gjk",
+      "code": "falsk",
       "tags": [],
-      "id": "pTY_V8KF3UI"
+      "id": "2e045jGSW_M"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
