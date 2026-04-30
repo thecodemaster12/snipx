@@ -2,7 +2,8 @@ import { SnippetContext } from "@/context/SnippetContex";
 import { useContext, useState } from "react";
 
 const SnippetForm = () => {
-  const { setSnippets } = useContext(SnippetContext);
+    const [isDisabled, setIsDisabled] = useState(false);
+  const { addSnippet } = useContext(SnippetContext);
   const [form, setForm] = useState({
     title: "",
     language: "",
@@ -25,6 +26,7 @@ const SnippetForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const validationErrors = validate();
 
     if (Object.keys(validationErrors).length > 0) {
@@ -33,6 +35,7 @@ const SnippetForm = () => {
     }
 
     setErrors({});
+    setIsDisabled(true);
 
     const newSnippet = {
       ...form,
@@ -43,21 +46,7 @@ const SnippetForm = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:4000/snippets", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newSnippet),
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to add snippet");
-      }
-
-      const data = await res.json();
-
-      setSnippets((prev) => [...prev, data]);
+        await addSnippet(newSnippet);
 
       setForm({
         title: "",
@@ -66,7 +55,9 @@ const SnippetForm = () => {
         tags: "",
       });
     } catch (error) {
-      setError(err.message);
+        setErrors({ api: error.message });
+    } finally {
+        setIsDisabled(false); // ✅ ALWAYS re-enable
     }
   };
 
@@ -149,14 +140,18 @@ const SnippetForm = () => {
             name="tags"
             onChange={handleChange}
             placeholder="JS, debug"
+            value={form.tags}
           />
         </div>
-        <button
-          type="submit"
-          className="py-2 px-6 bg-blue-400 text-white rounded-md"
-        >
-          Add
-        </button>
+          <button
+              type="submit"
+              disabled={isDisabled}
+              className={`py-2 px-6 rounded-md text-white ${
+                  isDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-400"
+              }`}
+          >
+              {isDisabled ? "Adding..." : "Add"}
+          </button>
       </form>
     </>
   );
