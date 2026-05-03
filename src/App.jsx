@@ -1,3 +1,4 @@
+import { Toaster } from "sonner"
 import HomePage from "./components/pages/HomePage"
 import { SnippetProvider } from "./context/SnippetContex"
 
@@ -10,6 +11,7 @@ const App = () => {
           <div className="container mx-auto">
             <SnippetProvider>
               <HomePage />
+              <Toaster position="top-right" richColors />
             </SnippetProvider>
           </div>
         </div>

@@ -1,30 +1,27 @@
-import {useContext} from "react";
-import {SnippetContext} from "@/context/SnippetContex.jsx";
+import { useContext } from "react";
+import { SnippetContext } from "@/context/SnippetContex.jsx";
+import { toast } from "sonner";
 
+const SnippetCard = ({ snippet }) => {
+  const { deleteSnippet } = useContext(SnippetContext);
 
-const SnippetCard = ({snippet}) => {
-    const {deleteSnippet} = useContext(SnippetContext)
-
-    const handleDelete = async (id) => {
-        const confirmDelete = confirm("Are you sure?");
-        if (!confirmDelete) return;
-
-        try {
-            await deleteSnippet(id);
-        } catch (error) {
-            alert("Failed to delete:", error);
-        }
-    };
+  const handleDelete = (id) => {
+    toast("Delete this snippet?", {
+      action: {
+        label: "Delete",
+        onClick: () => deleteSnippet(id),
+      },
+      cancel: {
+        label: "Cancel",
+      },
+    });
+  };
   return (
     <>
       <div className="bg-gray-700 p-4 rounded shadow">
-        <h2 className="text-lg font-semibold text-gray-100">
-          {snippet.title}
-        </h2>
+        <h2 className="text-lg font-semibold text-gray-100">{snippet.title}</h2>
 
-        <p className="text-sm text-gray-400 mt-1">
-          {snippet.language}
-        </p>
+        <p className="text-sm text-gray-400 mt-1">{snippet.language}</p>
 
         <pre className="bg-gray-100 p-3 mt-3 rounded text-sm overflow-x-auto">
           <code>{snippet.code}</code>
@@ -41,14 +38,11 @@ const SnippetCard = ({snippet}) => {
           ))}
         </div>
       </div>
-        <button
-            type="button"
-            onClick={() => handleDelete(snippet.id)}
-        >
-            Delete
-        </button>
+      <button type="button" onClick={() => handleDelete(snippet.id)}>
+        Delete
+      </button>
     </>
-  )
-}
+  );
+};
 
-export default SnippetCard
+export default SnippetCard;

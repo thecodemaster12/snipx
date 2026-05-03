@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export const SnippetContext = createContext();
 
@@ -21,77 +22,67 @@ export const SnippetProvider = ({ children }) => {
     }
   };
 
-    const addSnippet = async (snippet) => {
-        const tempId = Date.now();
+  const addSnippet = async (snippet) => {
+    const tempId = Date.now();
+    const optimisticSnippet = { ...snippet, id: tempId };
 
-        const optimisticSnippet = { ...snippet, id: tempId };
+    setSnippets((prev) => [...prev, optimisticSnippet]);
 
-        // 1. add instantly
-        setSnippets((prev) => [...prev, optimisticSnippet]);
+    try {
+      const res = await fetch("http://localhost:4000/snippets", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(snippet),
+      });
 
-        try {
-            const res = await fetch("http://localhost:4000/snippets", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(snippet),
-            });
+      if (!res.ok) throw new Error("Failed to add snippet");
 
-            if (!res.ok) {
-                throw new Error("Failed to add snippet");
-            }
+      const data = await res.json();
 
-            const data = await res.json();
+      setSnippets((prev) => prev.map((s) => (s.id === tempId ? data : s)));
 
-            // 2. replace temp with real
-            setSnippets((prev) =>
-                prev.map((s) => (s.id === tempId ? data : s))
-            );
+      toast.success("Snippet added ✅");
+    } catch (error) {
+      setSnippets((prev) => prev.filter((s) => s.id !== tempId));
 
-        } catch (error) {
-            // 3. rollback (remove temp)
-            setSnippets((prev) => prev.filter((s) => s.id !== tempId));
+      toast.error("Failed to add snippet ❌");
 
-            alert("Add failed. Try again.");
+      throw error;
+    }
+  };
 
-            throw error;
-        }
-    };
+  const deleteSnippet = async (id) => {
+    const previous = snippets;
 
-    const deleteSnippet = async (id) => {
-        // 1. backup current state
-        const previousSnippets = snippets;
+    setSnippets((prev) => prev.filter((s) => s.id !== id));
 
-        // 2. optimistic UI update
-        setSnippets((prev) => prev.filter((s) => s.id !== id));
+    try {
+      const res = await fetch(`http://localhost:4000/snippets/${id}`, {
+        method: "DELETE",
+      });
 
-        try {
-            const res = await fetch(`http://localhost:4000/snippets/${id}`, {
-                method: "DELETE",
-            });
+      if (!res.ok) throw new Error("Delete failed");
 
-            if (!res.ok) {
-                throw new Error("Failed to delete snippet");
-            }
+      toast.success("Snippet deleted 🗑️");
+    } catch (error) {
+      setSnippets(previous);
 
-        } catch (error) {
-            // 3. rollback
-            setSnippets(previousSnippets);
+      toast.error("Delete failed, restored ❌");
 
-            // 4. inform user
-            alert("Delete failed. Restored item.");
-
-            throw error;
-        }
-    };
+      throw error;
+    }
+  };
 
   useEffect(() => {
     fetchSnippets();
   }, []);
 
   return (
-    <SnippetContext.Provider value={{ snippets, loading, addSnippet, deleteSnippet }}>
+    <SnippetContext.Provider
+      value={{ snippets, loading, addSnippet, deleteSnippet }}
+    >
       {children}
     </SnippetContext.Provider>
   );
