@@ -1,13 +1,11 @@
 {
   "snippets": [
     {
-      "title": "Test code",
-      "language": "js",
-      "code": "ldskfjl",
-      "tags": [
-        "ldskjfl"
-      ],
-      "id": "VA0WizI-KsE"
+      "title": "fe",
+      "language": "effe",
+      "code": "ewrw",
+      "tags": [],
+      "id": "djGzE0JOtDQ"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

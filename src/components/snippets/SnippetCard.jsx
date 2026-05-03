@@ -37,10 +37,10 @@ const SnippetCard = ({ snippet }) => {
             </span>
           ))}
         </div>
+        <button type="button" onClick={() => handleDelete(snippet.id)}>
+          Delete
+        </button>
       </div>
-      <button type="button" onClick={() => handleDelete(snippet.id)}>
-        Delete
-      </button>
     </>
   );
 };
