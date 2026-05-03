@@ -6,6 +6,13 @@
       "code": "ewrw",
       "tags": [],
       "id": "djGzE0JOtDQ"
+    },
+    {
+      "title": "Context",
+      "language": "js",
+      "code": "const { deleteSnippet } = useContext(SnippetContext);",
+      "tags": [],
+      "id": "kvyghDYXk4Q"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

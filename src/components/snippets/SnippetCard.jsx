@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { SnippetContext } from "@/context/SnippetContex.jsx";
 import { toast } from "sonner";
+import CodeBlock from "../ui/CodeBlock";
 
 const SnippetCard = ({ snippet }) => {
   const { deleteSnippet } = useContext(SnippetContext);
@@ -24,7 +25,8 @@ const SnippetCard = ({ snippet }) => {
         <p className="text-sm text-gray-400 mt-1">{snippet.language}</p>
 
         <pre className="bg-gray-100 p-3 mt-3 rounded text-sm overflow-x-auto">
-          <code>{snippet.code}</code>
+          {/* <code>{snippet.code}</code> */}
+          <CodeBlock code={snippet.code} language={snippet.language} />
         </pre>
 
         <div className="mt-2 flex gap-2 flex-wrap">
